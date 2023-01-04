@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.gaurav.kyccameraexample"
         minSdkVersion 14
-        targetSdkVersion 29
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -40,6 +40,6 @@ dependencies {
     implementation project(':kyccamera')
 
     /*leakcanary*/
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
 }

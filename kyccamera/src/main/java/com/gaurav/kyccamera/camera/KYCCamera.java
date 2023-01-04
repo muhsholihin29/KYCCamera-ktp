@@ -7,9 +7,9 @@ import java.lang.ref.WeakReference;
 
 public class KYCCamera {
 
-    public final static int    TYPE_AADHAARCARD_FRONT     = 1;//Front of AADHAAR card
-    public final static int    TYPE_AADHAARCARD_BACK      = 2;//Reverse side of AADHAAR card
-    public final static int    TYPE_PANCARD_FRONT    = 3;//Front of PAN card
+    public final static int TYPE_KTP = 1;//KTP card
+    public final static int TYPE_SELFIE = 2;//Selfie front camera
+    public final static int TYPE_SELFIE_KTP = 3;//Selfie with ktp front camera
     public final static int    RESULT_CODE           = 0X11;//Result code
     public final static int    PERMISSION_CODE_FIRST = 0x12;//Permission request code
     public final static String TAKE_TYPE             = "take_type";//Shot type mark

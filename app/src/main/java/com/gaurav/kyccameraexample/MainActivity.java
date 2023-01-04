@@ -26,16 +26,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void acfront(View view) {
-        KYCCamera.create(this).openCamera(KYCCamera.TYPE_AADHAARCARD_FRONT);
+    public void ktp(View view) {
+        KYCCamera.create(this).openCamera(KYCCamera.TYPE_KTP);
     }
 
-    public void acback(View view) {
-        KYCCamera.create(this).openCamera(KYCCamera.TYPE_AADHAARCARD_BACK);
+    public void selfie(View view) {
+        KYCCamera.create(this).openCamera(KYCCamera.TYPE_SELFIE);
     }
 
-    public void pcfront(View view) {
-        KYCCamera.create(this).openCamera(KYCCamera.TYPE_PANCARD_FRONT);
+    public void selfieKtp(View view) {
+        KYCCamera.create(this).openCamera(KYCCamera.TYPE_SELFIE_KTP);
     }
 
     @Override
@@ -45,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
             //Get image path，display image
             final String path = KYCCamera.getImagePath(data);
             if (!TextUtils.isEmpty(path)) {
-                if (requestCode == KYCCamera.TYPE_AADHAARCARD_FRONT) { //Front of AADHAAR card
+                if (requestCode == KYCCamera.TYPE_KTP) { //Front of AADHAAR card
                     acf.setImageBitmap(BitmapFactory.decodeFile(path));
-                } else if (requestCode == KYCCamera.TYPE_AADHAARCARD_BACK) {  //Reverse side of AADHAAR card
+                } else if (requestCode == KYCCamera.TYPE_SELFIE) {  //Reverse side of AADHAAR card
                     acb.setImageBitmap(BitmapFactory.decodeFile(path));
-                } else if (requestCode == KYCCamera.TYPE_PANCARD_FRONT) {  //Front of PAN card
+                } else if (requestCode == KYCCamera.TYPE_SELFIE_KTP) {  //Front of PAN card
                     pcf.setImageBitmap(BitmapFactory.decodeFile(path));
                 }
 

@@ -30,18 +30,18 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:gravity="center"
-                android:text="@string/fac"
+                android:text="@string/ktp"
                 android:clickable="true"
                 android:textSize="15sp"
                 android:focusable="true"
-                android:onClick="acfront"/>
+                android:onClick="ktp"/>
 
             <ImageView
                 android:id="@+id/acf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
-                android:contentDescription="@string/fac" />
+                android:contentDescription="@string/ktp" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.01dp"
@@ -60,18 +60,18 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:gravity="center"
-                android:text="@string/bac"
+                android:text="@string/selfie"
                 android:clickable="true"
                 android:textSize="15sp"
                 android:focusable="true"
-                android:onClick="acback"/>
+                android:onClick="selfie"/>
 
             <ImageView
                 android:id="@+id/acb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
-                android:contentDescription="@string/bac" />
+                android:contentDescription="@string/selfie" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.01dp"
@@ -99,18 +99,18 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:gravity="center"
-                android:text="@string/fpc"
+                android:text="@string/selfie_ktp"
                 android:textSize="15sp"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="pcfront"/>
+                android:onClick="selfieKtp"/>
 
             <ImageView
                 android:id="@+id/pcf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
-                android:contentDescription="@string/fpc" />
+                android:contentDescription="@string/selfie_ktp" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.01dp"

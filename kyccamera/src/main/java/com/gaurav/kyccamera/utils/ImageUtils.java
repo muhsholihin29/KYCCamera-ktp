@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 
@@ -60,7 +61,7 @@ public class ImageUtils {
     }
 
 
-    public static Bitmap getBitmapFromByte(byte[] bytes, int width, int height) {
+    public static Bitmap getBitmapFromByte(byte[] bytes, int width, int height, int rotate) {
         final YuvImage image = new YuvImage(bytes, ImageFormat.NV21, width, height, null);
         ByteArrayOutputStream os = new ByteArrayOutputStream(bytes.length);
         if (!image.compressToJpeg(new Rect(0, 0, width, height), 100, os)) {
@@ -68,6 +69,12 @@ public class ImageUtils {
         }
         byte[] tmp = os.toByteArray();
         Bitmap bmp = BitmapFactory.decodeByteArray(tmp, 0, tmp.length);
-        return bmp;
+
+        //rotate
+        Matrix matrix = new Matrix();
+        matrix.postRotate(rotate);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bmp, width, height, true);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+        return rotatedBitmap;
     }
 }

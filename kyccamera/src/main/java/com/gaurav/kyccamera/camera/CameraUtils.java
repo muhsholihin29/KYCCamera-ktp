@@ -19,10 +19,10 @@ public class CameraUtils {
         }
     }
 
-    public static Camera openCamera() {
+    public static Camera openCamera(Integer cameraFacingIndex) {
         camera = null;
         try {
-            camera = Camera.open(); // attempt to get a Camera instance
+            camera = Camera.open(cameraFacingIndex); // attempt to get a Camera instance
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
         }

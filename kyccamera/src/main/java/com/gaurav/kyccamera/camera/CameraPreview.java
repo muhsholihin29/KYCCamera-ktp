@@ -12,6 +12,7 @@ import android.view.SurfaceView;
 
 import com.gaurav.kyccamera.utils.ScreenUtils;
 
+import java.io.IOException;
 import java.util.List;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -23,6 +24,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private SensorControler  mSensorControler;
     private Context          mContext;
     private SurfaceHolder    mSurfaceHolder;
+    private Integer          mCameraFacingIndex;
+    private Integer          mCameraFacing;
 
     public CameraPreview(Context context) {
         super(context);
@@ -55,21 +58,30 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
-        camera = CameraUtils.openCamera();
+        camera = CameraUtils.openCamera(mCameraFacingIndex);
         if (camera != null) {
             try {
                 camera.setPreviewDisplay(holder);
 
                 Camera.Parameters parameters = camera.getParameters();
-                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    camera.setDisplayOrientation(90);
-                    parameters.setRotation(90);
-                } else {
-                    camera.setDisplayOrientation(0);
-                    parameters.setRotation(0);
-                }
-                List<Camera.Size> sizeList = parameters.getSupportedPreviewSizes();
+                camera.setDisplayOrientation(90);
+                parameters.setRotation(90);
+                List<Camera.Size> sizeList = camera.getParameters().getSupportedPreviewSizes();
+
                 Camera.Size bestSize = getOptimalPreviewSize(sizeList, ScreenUtils.getScreenWidth(mContext), ScreenUtils.getScreenHeight(mContext));
+//                Camera.Size bestSize = getOptimalPreviewSize(sizeList, width, height);
+                if (bestSize!=null) {
+                    float ratio;
+                    if(bestSize.height >= bestSize.width)
+                        ratio = (float) bestSize.height / (float) bestSize.width;
+                    else
+                        ratio = (float) bestSize.width / (float) bestSize.height;
+
+                    // One of these methods should be used, second method squishes preview slightly
+//                    if (mCameraFacing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                    setMeasuredDimension(ScreenUtils.getScreenWidth(mContext), (int) (ScreenUtils.getScreenWidth(mContext) * ratio));
+//                    }
+                }
                 parameters.setPreviewSize(bestSize.width, bestSize.height);//设置预览大小
                 camera.setParameters(parameters);
                 camera.startPreview();
@@ -78,13 +90,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 Log.d(TAG, "Error setting camera preview: " + e.getMessage());
                 try {
                     Camera.Parameters parameters = camera.getParameters();
-                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                      camera.setDisplayOrientation(90);
-                        parameters.setRotation(90);
-                    } else {
-                        camera.setDisplayOrientation(0);
-                        parameters.setRotation(0);
-                    }
+                    camera.setDisplayOrientation(90);
+                    parameters.setRotation(90);
                     camera.setParameters(parameters);
                     camera.startPreview();
                     focus();
@@ -99,7 +106,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
         final double ASPECT_TOLERANCE = 0.1;
-        double targetRatio = (double) w / h;
+        double targetRatio = (double) h / w;
         if (sizes == null)
             return null;
 
@@ -108,18 +115,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         int targetHeight = h;
 
-        // Try to find an size match aspect ratio and size
         for (Camera.Size size : sizes) {
             double ratio = (double) size.width / size.height;
-            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE)
-                continue;
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
             if (Math.abs(size.height - targetHeight) < minDiff) {
                 optimalSize = size;
                 minDiff = Math.abs(size.height - targetHeight);
             }
         }
 
-        // Cannot find the one match the aspect ratio, ignore the requirement
         if (optimalSize == null) {
             minDiff = Double.MAX_VALUE;
             for (Camera.Size size : sizes) {
@@ -154,6 +158,21 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
+    public void cameraFacing(Integer cameraFacing) {
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        for (int cameraIndex = 0; cameraIndex < Camera.getNumberOfCameras(); cameraIndex++) {
+            Camera.getCameraInfo(cameraIndex, cameraInfo);
+            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT
+                    && cameraFacing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                mCameraFacing = Camera.CameraInfo.CAMERA_FACING_FRONT;
+                mCameraFacingIndex = cameraIndex;
+            } else if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK
+                    && cameraFacing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                mCameraFacing = Camera.CameraInfo.CAMERA_FACING_BACK;
+                mCameraFacingIndex = cameraIndex;
+            }
+        }
+    }
 
     public void focus() {
         if (camera != null) {

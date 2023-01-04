@@ -88,7 +88,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     private void init() {
         setContentView(R.layout.activity_camera);
         mType = getIntent().getIntExtra(KYCCamera.TAKE_TYPE, 0);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initView();
         initListener();
     }
@@ -107,27 +107,31 @@ public class CameraActivity extends Activity implements View.OnClickListener {
 
         float screenMinSize = Math.min(ScreenUtils.getScreenWidth(this), ScreenUtils.getScreenHeight(this));
         float screenMaxSize = Math.max(ScreenUtils.getScreenWidth(this), ScreenUtils.getScreenHeight(this));
-        float height = (int) (screenMinSize * 0.75);
-        float width = (int) (height * 75.0f / 47.0f);
+        float width = (int) (screenMinSize * 0.95);
+        float height;
 
-        float flCameraOptionWidth = (screenMaxSize - width) / 2;
+        if (mType == KYCCamera.TYPE_KTP) {
+            height = (int) (width / 1.6f);
+        } else {
+            height = (int) (width / 0.64f);
+        }
+
         LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams((int) width, ViewGroup.LayoutParams.MATCH_PARENT);
         LinearLayout.LayoutParams cropParams = new LinearLayout.LayoutParams((int) width, (int) height);
-        LinearLayout.LayoutParams cameraOptionParams = new LinearLayout.LayoutParams((int) flCameraOptionWidth, ViewGroup.LayoutParams.MATCH_PARENT);
         mLlCameraCropContainer.setLayoutParams(containerParams);
         mIvCameraCrop.setLayoutParams(cropParams);
-        //Get the width of the "camera crop area" to dynamically set the width of the bottom "operation area" to center the "camera crop area"
-        mFlCameraOption.setLayoutParams(cameraOptionParams);
 
         switch (mType) {
-            case KYCCamera.TYPE_AADHAARCARD_FRONT:
-                mIvCameraCrop.setImageResource(R.mipmap.af);
+            case KYCCamera.TYPE_KTP:
+                mIvCameraCrop.setImageResource(R.mipmap.overlay_ktp);
+                mCameraPreview.cameraFacing(Camera.CameraInfo.CAMERA_FACING_BACK);
+
                 break;
-            case KYCCamera.TYPE_AADHAARCARD_BACK:
-                mIvCameraCrop.setImageResource(R.mipmap.ab);
-                break;
-            case KYCCamera.TYPE_PANCARD_FRONT:
-                mIvCameraCrop.setImageResource(R.mipmap.pf);
+            case KYCCamera.TYPE_SELFIE:
+            case KYCCamera.TYPE_SELFIE_KTP:
+                mIvCameraCrop.setImageResource(R.mipmap.overlay_selfie_ktp);
+                mCameraPreview.cameraFacing(Camera.CameraInfo.CAMERA_FACING_FRONT);
+
                 break;
         }
 
@@ -198,7 +202,12 @@ public class CameraActivity extends Activity implements View.OnClickListener {
                     public void run() {
                         final int w = size.width;
                         final int h = size.height;
-                        Bitmap bitmap = ImageUtils.getBitmapFromByte(bytes, w, h);
+                        Bitmap bitmap;
+                        if (mType == KYCCamera.TYPE_KTP) {
+                            bitmap = ImageUtils.getBitmapFromByte(bytes, w, h, 90);
+                        } else {
+                            bitmap = ImageUtils.getBitmapFromByte(bytes, w, h, 270);
+                        }
                         cropImage(bitmap);
                     }
                 }).start();
@@ -213,21 +222,21 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         /*Calculate the coordinate points of the scan frame*/
         float left = mViewCameraCropLeft.getWidth();
         float top = mIvCameraCrop.getTop();
-        float right = mIvCameraCrop.getRight() + left;
+        float right = mIvCameraCrop.getRight();
         float bottom = mIvCameraCrop.getBottom();
 
         /*Calculate the ratio of the coordinate points of the scan frame to the coordinate points of the original image*/
         float leftProportion = left / mCameraPreview.getWidth();
         float topProportion = top / mCameraPreview.getHeight();
         float rightProportion = right / mCameraPreview.getWidth();
-        float bottomProportion = bottom / mCameraPreview.getBottom();
+        float bottomProportion = bottom / mCameraPreview.getHeight();
 
 
         mCropBitmap = Bitmap.createBitmap(bitmap,
-                (int) (leftProportion * (float) bitmap.getWidth()),
-                (int) (topProportion * (float) bitmap.getHeight()),
-                (int) ((rightProportion - leftProportion) * (float) bitmap.getWidth()),
-                (int) ((bottomProportion - topProportion) * (float) bitmap.getHeight()));
+                (int) (leftProportion * (float) bitmap.getWidth()), //x
+                (int) (topProportion * (float) bitmap.getHeight()), //y
+                (int) ((rightProportion - leftProportion) * (float) bitmap.getWidth()), //width
+                (int) ((bottomProportion - topProportion) * (float) bitmap.getHeight())); //height
 
 
         runOnUiThread(new Runnable() {
