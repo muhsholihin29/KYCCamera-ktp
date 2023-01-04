@@ -146,7 +146,7 @@
                     android:text="Foto Ulang"
                     android:fontFamily="@font/poppins_bold"
                     android:textAllCaps="false"
-                    android:textColor="#000000"
+                    android:textColor="#3E3E3E"
                     android:textSize="14sp"
                     android:textStyle="bold"/>
 
