@@ -5,12 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_000000">
 
-    <!--相机预览-->
-    <com.gaurav.kyccamera.camera.CameraPreview
-        android:id="@+id/camera_preview"
-        android:visibility="gone"
+    <RelativeLayout
+        android:id="@+id/layout_camera_preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <LinearLayout
         android:layout_width="match_parent"

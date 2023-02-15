@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     private CropImageView mCropImageView;
     private Bitmap mCropBitmap;
     private CameraPreview mCameraPreview;
+    private RelativeLayout layoutCameraPreview;
     private View          mLlCameraCropContainer;
     private ImageView mIvCameraCrop;
     private ImageView     mIvCameraFlash;
@@ -94,7 +96,8 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     }
 
     private void initView() {
-        mCameraPreview = (CameraPreview) findViewById(R.id.camera_preview);
+        layoutCameraPreview = (RelativeLayout) findViewById(R.id.layout_camera_preview);
+
         mLlCameraCropContainer = findViewById(R.id.ll_camera_crop_container);
         mIvCameraCrop = (ImageView) findViewById(R.id.iv_camera_crop);
         mIvCameraFlash = (ImageView) findViewById(R.id.iv_camera_flash);
@@ -124,16 +127,16 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         switch (mType) {
             case KYCCamera.TYPE_KTP:
                 mIvCameraCrop.setImageResource(R.mipmap.overlay_ktp);
-                mCameraPreview.cameraFacing(Camera.CameraInfo.CAMERA_FACING_BACK);
-
+                mCameraPreview = new CameraPreview(this, Camera.CameraInfo.CAMERA_FACING_BACK, CameraPreview.LayoutMode.FitToParent);
                 break;
             case KYCCamera.TYPE_SELFIE:
             case KYCCamera.TYPE_SELFIE_KTP:
                 mIvCameraCrop.setImageResource(R.mipmap.overlay_selfie_ktp);
-                mCameraPreview.cameraFacing(Camera.CameraInfo.CAMERA_FACING_FRONT);
-
+                mCameraPreview = new CameraPreview(this, Camera.CameraInfo.CAMERA_FACING_FRONT, CameraPreview.LayoutMode.FitToParent);
                 break;
         }
+        RelativeLayout.LayoutParams previewLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutCameraPreview.addView(mCameraPreview, 0, previewLayoutParams);
 
         /*Added 0.5 second transition interface to solve the problem of slow startup of preview interface caused by individual mobile phone's first permission application*/
         new Handler().postDelayed(new Runnable() {
@@ -161,7 +164,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.camera_preview) {
+        if (id == R.id.layout_camera_preview) {
             mCameraPreview.focus();
         } else if (id == R.id.iv_camera_close) {
             finish();
