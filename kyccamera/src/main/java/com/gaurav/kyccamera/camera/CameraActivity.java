@@ -116,7 +116,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         if (mType == KYCCamera.TYPE_KTP) {
             height = (int) (width / 1.6f);
         } else {
-            height = (int) (width / 0.64f);
+            height = (int) (screenMaxSize / 1.44f);
         }
 
         LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams((int) width, ViewGroup.LayoutParams.MATCH_PARENT);
