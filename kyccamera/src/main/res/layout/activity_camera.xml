@@ -10,6 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <com.gaurav.kyccamera.camera.CameraPreview
+        android:id="@+id/camera_preview"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -64,11 +70,11 @@
                     android:id="@+id/view_camera_crop_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:background="@color/preview_mock"
                     android:gravity="center"
                     android:fontFamily="@font/poppins"
-                    android:text="@string/touch_to_focus"
+                    android:text="@string/wording_ktp"
                     android:textColor="@color/color_afff"
                     android:textSize="16dp" />
 
