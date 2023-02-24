@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -57,7 +58,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
 
         boolean checkPermissionFirst = PermissionUtils.checkPermissionFirst(this, KYCCamera.PERMISSION_CODE_FIRST,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA});
-        if (checkPermissionFirst) {
+            if (checkPermissionFirst || Build.VERSION.SDK_INT >= 33) {
             init();
         }
     }
