@@ -56,9 +56,13 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        boolean checkPermissionFirst = PermissionUtils.checkPermissionFirst(this, KYCCamera.PERMISSION_CODE_FIRST,
-                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA});
-            if (checkPermissionFirst || Build.VERSION.SDK_INT >= 33) {
+        if (Build.VERSION.SDK_INT < 33) {
+            boolean checkPermissionFirst = PermissionUtils.checkPermissionFirst(this, KYCCamera.PERMISSION_CODE_FIRST,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA});
+            if (checkPermissionFirst) {
+                init();
+            }
+        } else {
             init();
         }
     }
