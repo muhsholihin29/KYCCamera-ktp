@@ -56,7 +56,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/overlay_selfie_ktp"/>
+                    app:srcCompat="@mipmap/overlay_selfie_ktp"/>
 
                 <!--手动裁剪区域-->
                 <com.gaurav.kyccamera.cropper.CropImageView
@@ -138,14 +138,14 @@
                 android:visibility="gone"
                 android:orientation="horizontal">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/iv_camera_result_cancel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="8dp"
                     android:backgroundTint="#FFFF"
-                    android:background="@drawable/round_button"
+                    app:cornerRadius="6dp"
                     android:minHeight="40dp"
                     android:text="Foto Ulang"
                     android:fontFamily="@font/poppins_bold"
@@ -154,14 +154,14 @@
                     android:textSize="14sp"
                     android:textStyle="bold"/>
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/iv_camera_result_ok"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="8dp"
-                    android:backgroundTint="#FE5E20"
-                    android:background="@drawable/round_button"
+                    android:backgroundTint="#0176CF"
+                    app:cornerRadius="6dp"
                     android:minHeight="40dp"
                     android:text="Lanjutkan"
                     android:fontFamily="@font/poppins_bold"
@@ -169,10 +169,8 @@
                     android:textColor="#FFFF"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    app:strokeColor="#FE5E20"
+                    app:strokeColor="#0176CF"
                     app:strokeWidth="2dp" />
-
-
 
             </LinearLayout>
 

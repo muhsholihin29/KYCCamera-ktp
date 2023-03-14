@@ -19,7 +19,7 @@
         android:supportsRtl="true">
         <activity android:name=".camera.CameraActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
+            android:theme="@style/FullScreen"/>
     </application>
 
 </manifest>
