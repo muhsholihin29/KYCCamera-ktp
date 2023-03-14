@@ -56,7 +56,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:scaleType="fitXY"
-                    app:srcCompat="@mipmap/overlay_selfie_ktp"/>
+                    android:src="@mipmap/overlay_selfie_ktp"/>
 
                 <!--手动裁剪区域-->
                 <com.gaurav.kyccamera.cropper.CropImageView
@@ -138,14 +138,14 @@
                 android:visibility="gone"
                 android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/iv_camera_result_cancel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="8dp"
                     android:backgroundTint="#FFFF"
-                    app:cornerRadius="6dp"
+                    android:background="@drawable/round_button"
                     android:minHeight="40dp"
                     android:text="Foto Ulang"
                     android:fontFamily="@font/poppins_bold"
@@ -154,14 +154,14 @@
                     android:textSize="14sp"
                     android:textStyle="bold"/>
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/iv_camera_result_ok"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="8dp"
                     android:backgroundTint="#0176CF"
-                    app:cornerRadius="6dp"
+                    android:background="@drawable/round_button"
                     android:minHeight="40dp"
                     android:text="Lanjutkan"
                     android:fontFamily="@font/poppins_bold"

@@ -2,6 +2,7 @@ package com.gaurav.kyccamera.camera;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -31,6 +32,7 @@ import com.gaurav.kyccamera.utils.FileUtils;
 import com.gaurav.kyccamera.utils.ImageUtils;
 import com.gaurav.kyccamera.utils.PermissionUtils;
 import com.gaurav.kyccamera.utils.ScreenUtils;
+import com.google.android.play.core.splitcompat.SplitCompat;
 
 import java.io.File;
 
@@ -325,5 +327,11 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         if (mCameraPreview != null) {
             mCameraPreview.onStop();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
+        SplitCompat.install(this);
     }
 }
