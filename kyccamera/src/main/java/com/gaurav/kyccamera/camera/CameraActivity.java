@@ -11,18 +11,22 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.gaurav.kyccamera.R;
 import com.gaurav.kyccamera.cropper.CropImageView;
@@ -66,6 +70,18 @@ public class CameraActivity extends Activity implements View.OnClickListener {
             }
         } else {
             init();
+        }
+
+        View root = findViewById(android.R.id.content);
+        View contentView = ((ViewGroup) root).getChildAt(0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // API 29+
+            WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+            ViewCompat.setOnApplyWindowInsetsListener(contentView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(0, systemBars.top, 0, systemBars.bottom);
+                return insets;
+            });
+            ViewCompat.requestApplyInsets(contentView);
         }
     }
 
